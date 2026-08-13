@@ -3,7 +3,6 @@ import { Link, NavLink } from 'react-router-dom'
 import { Bike, Menu, ShoppingCart, X } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import antojitosLogo from '../../assets/common/antojitos-logo.png'
-
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/menu', label: 'Menú' },
@@ -20,7 +19,7 @@ const getNavLinkClasses = ({ isActive }) =>
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const { cartCount } = useCart()
+  const { cartCount, openCart } = useCart()
 
   const closeMobileMenu = () => {
     setMobileOpen(false)
@@ -49,10 +48,11 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-2 lg:gap-3">
-          <Link
-            to="/cart"
+          <button
+            type="button"
+            onClick={openCart}
             className="relative flex h-11 w-11 items-center justify-center rounded-lg text-neutral-300 transition-colors hover:bg-white/5 hover:text-white"
-            aria-label="Carrito de compras"
+            aria-label="Abrir carrito"
           >
             <ShoppingCart className="h-6 w-6" aria-hidden="true" />
             {cartCount > 0 && (
@@ -60,7 +60,7 @@ const Navbar = () => {
                 {cartCount}
               </span>
             )}
-          </Link>
+          </button>
 
           <Link
             to="/delivery"

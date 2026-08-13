@@ -15,6 +15,8 @@ const getInitialCart = () => {
 
 const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(getInitialCart)
+  const [isCartOpen, setIsCartOpen] = useState(false)
+  const [lastAdded, setLastAdded] = useState(null)
 
   useEffect(() => {
     try {
@@ -25,6 +27,7 @@ const CartProvider = ({ children }) => {
   }, [cartItems])
 
   const addToCart = useCallback((item) => {
+    setLastAdded({ product: item, key: Date.now() })
     setCartItems((prevItems) => {
       const existing = prevItems.find((cartItem) => cartItem.id === item.id)
       if (existing) {
@@ -68,6 +71,9 @@ const CartProvider = ({ children }) => {
     [cartItems],
   )
 
+  const openCart = useCallback(() => setIsCartOpen(true), [])
+  const closeCart = useCallback(() => setIsCartOpen(false), [])
+
   const value = useMemo(
     () => ({
       cartItems,
@@ -77,8 +83,24 @@ const CartProvider = ({ children }) => {
       clearCart,
       cartCount,
       cartTotal,
+      isCartOpen,
+      openCart,
+      closeCart,
+      lastAdded,
     }),
-    [cartItems, addToCart, removeFromCart, updateQuantity, clearCart, cartCount, cartTotal],
+    [
+      cartItems,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      cartCount,
+      cartTotal,
+      isCartOpen,
+      openCart,
+      closeCart,
+      lastAdded,
+    ],
   )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
