@@ -6,7 +6,6 @@ import antojitosLogo from '../../assets/common/antojitos-logo.png'
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/menu', label: 'Menú' },
-  { to: '/promos', label: 'Promos' },
   { to: '/delivery', label: 'Delivery' },
   { to: '/about', label: 'Nosotros' },
   { to: '/contact', label: 'Contacto' },
