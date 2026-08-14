@@ -5,7 +5,6 @@ import Menu from '../pages/Menu'
 import Delivery from '../pages/Delivery'
 import About from '../pages/About'
 import Contact from '../pages/Contact'
-import Cart from '../pages/Cart'
 import NotFound from '../pages/NotFound'
 
 const AppRouter = createBrowserRouter([
@@ -18,7 +17,6 @@ const AppRouter = createBrowserRouter([
       { path: 'delivery', element: <Delivery /> },
       { path: 'about', element: <About /> },
       { path: 'contact', element: <Contact /> },
-      { path: 'cart', element: <Cart /> },
       { path: '*', element: <NotFound /> },
     ],
   },

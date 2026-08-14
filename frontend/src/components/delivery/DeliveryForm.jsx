@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { MapPin } from 'lucide-react'
 
 const districts = [
@@ -19,7 +20,20 @@ const Field = ({ label, error, children }) => (
   <div>
     <label className="mb-1.5 block text-sm font-medium text-neutral-300">{label}</label>
     {children}
-    {error && <p className={errorText}>{error}</p>}
+    <AnimatePresence>
+      {error && (
+        <motion.p
+          className={errorText}
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
+          style={{ overflow: 'hidden' }}
+        >
+          {error}
+        </motion.p>
+      )}
+    </AnimatePresence>
   </div>
 )
 

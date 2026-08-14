@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { menuCategories, menuItems } from '../data/menuData'
+import { useRevealVariants } from '../animations/variants'
 import MenuHero from '../components/menu/MenuHero'
 import MenuCategories from '../components/menu/MenuCategories'
 import MenuSection from '../components/menu/MenuSection'
@@ -14,6 +16,7 @@ const sectionMeta = {
 
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState('all')
+  const { fadeIn } = useRevealVariants()
 
   const filteredItems = useMemo(() => {
     if (activeCategory === 'all') return menuItems
@@ -32,19 +35,29 @@ const Menu = () => {
     <>
       <MenuHero />
       <MenuCategories activeCategory={activeCategory} onSelect={setActiveCategory} />
-      {visibleCategories.map((category, index) => {
-        const meta = sectionMeta[category.id]
-        return (
-          <MenuSection
-            key={category.id}
-            variant={index % 2 !== 0 ? 'soft' : 'default'}
-            eyebrow={meta.eyebrow}
-            title={meta.title}
-            description={meta.description}
-            products={filteredItems.filter((item) => item.category === category.id)}
-          />
-        )
-      })}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeCategory}
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
+          {visibleCategories.map((category, index) => {
+            const meta = sectionMeta[category.id]
+            return (
+              <MenuSection
+                key={category.id}
+                variant={index % 2 !== 0 ? 'soft' : 'default'}
+                eyebrow={meta.eyebrow}
+                title={meta.title}
+                description={meta.description}
+                products={filteredItems.filter((item) => item.category === category.id)}
+              />
+            )
+          })}
+        </motion.div>
+      </AnimatePresence>
     </>
   )
 }

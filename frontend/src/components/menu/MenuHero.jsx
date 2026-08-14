@@ -1,7 +1,11 @@
+import { motion } from 'framer-motion'
 import { Flame } from 'lucide-react'
+import { staggerContainer, useRevealVariants } from '../../animations/variants'
 import menuHeroBg from '../../assets/Menu/menu-hero-bg.jpg'
 
 const MenuHero = () => {
+  const { fadeUp } = useRevealVariants()
+
   return (
     <section
       className="relative flex min-h-[300px] items-center overflow-hidden bg-[#0a0806] bg-cover bg-center bg-no-repeat lg:min-h-[300px]"
@@ -17,23 +21,34 @@ const MenuHero = () => {
         aria-hidden="true"
       />
       <div className="relative mx-auto w-full max-w-[1440px] px-6 py-12 xl:px-10">
-        <div className="max-w-2xl">
-          <div className="flex items-center gap-3">
+        <motion.div
+          className="max-w-2xl"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div className="flex items-center gap-3" variants={fadeUp}>
             <span className="h-px w-8 bg-red-500" aria-hidden="true" />
             <Flame className="h-4 w-4 text-red-500" aria-hidden="true" />
             <span className="text-sm font-semibold uppercase tracking-[0.25em] text-red-400">
               Nuestro menú
             </span>
-          </div>
-          <h1 className="mt-4 text-4xl font-extrabold uppercase leading-[0.9] tracking-tight text-white md:text-5xl lg:text-[52px]">
+          </motion.div>
+          <motion.h1
+            className="mt-4 text-4xl font-extrabold uppercase leading-[0.9] tracking-tight text-white md:text-5xl lg:text-[52px]"
+            variants={fadeUp}
+          >
             <span className="lg:mr-3">Sabor que</span>
             <span className="block text-red-500">se comparte</span>
-          </h1>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-neutral-300 md:text-base">
+          </motion.h1>
+          <motion.p
+            className="mt-4 max-w-xl text-sm leading-relaxed text-neutral-300 md:text-base"
+            variants={fadeUp}
+          >
             Pollo a la brasa preparado al carbón con una receta única y acompañado de los mejores
             ingredientes.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
     </section>
   )

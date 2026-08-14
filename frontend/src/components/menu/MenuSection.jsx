@@ -1,8 +1,18 @@
+import { motion } from 'framer-motion'
 import ProductCard from './ProductCard'
+import { staggerContainer, useRevealVariants, viewportOnce } from '../../animations/variants'
 
 const MenuSection = ({ eyebrow, title, description, products, variant = 'default' }) => {
+  const { fadeUp } = useRevealVariants()
+
   return (
-    <section className={`py-14 lg:py-16 ${variant === 'soft' ? 'bg-[#0c0c0c]' : 'bg-[#080808]'}`}>
+    <motion.section
+      className={`py-14 lg:py-16 ${variant === 'soft' ? 'bg-[#0c0c0c]' : 'bg-[#080808]'}`}
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+    >
       <div className="mx-auto w-full max-w-[1440px] px-6 xl:px-10">
         <div className="mb-2">
           <div className="flex items-center gap-3">
@@ -19,13 +29,19 @@ const MenuSection = ({ eyebrow, title, description, products, variant = 'default
           )}
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 mt-7 lg:grid-cols-4 lg:mt-8">
+        <motion.div
+          className="grid grid-cols-1 gap-5 sm:grid-cols-2 mt-7 lg:grid-cols-4 lg:mt-8"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   )
 }
 

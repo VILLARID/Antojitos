@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Link, NavLink } from 'react-router-dom'
 import { Bike, Menu, ShoppingCart, X } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
@@ -55,9 +56,15 @@ const Navbar = () => {
           >
             <ShoppingCart className="h-6 w-6" aria-hidden="true" />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white">
+              <motion.span
+                key={cartCount}
+                className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white"
+                initial={{ scale: 0.4, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+              >
                 {cartCount}
-              </span>
+              </motion.span>
             )}
           </button>
 
@@ -86,42 +93,49 @@ const Navbar = () => {
         </div>
       </div>
 
-      {mobileOpen && (
-        <nav
-          id="mobile-menu"
-          className="border-t border-white/10 bg-[#090909] lg:hidden"
-          aria-label="Navegación móvil"
-        >
-          <ul className="flex flex-col px-6 py-4">
-            {navLinks.map((link) => (
-              <li key={link.to} className="border-b border-white/10 last:border-b-0">
-                <NavLink
-                  to={link.to}
-                  end={link.to === '/'}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.nav
+            id="mobile-menu"
+            className="border-t border-white/10 bg-[#090909] lg:hidden"
+            aria-label="Navegación móvil"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            style={{ overflow: 'hidden' }}
+          >
+            <ul className="flex flex-col px-6 py-4">
+              {navLinks.map((link) => (
+                <li key={link.to} className="border-b border-white/10 last:border-b-0">
+                  <NavLink
+                    to={link.to}
+                    end={link.to === '/'}
+                    onClick={closeMobileMenu}
+                    className={({ isActive }) =>
+                      `block py-3 text-[15px] font-medium transition-colors ${
+                        isActive ? 'text-red-500' : 'text-neutral-300 hover:text-white'
+                      }`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                </li>
+              ))}
+              <li className="pt-4">
+                <Link
+                  to="/delivery"
                   onClick={closeMobileMenu}
-                  className={({ isActive }) =>
-                    `block py-3 text-[15px] font-medium transition-colors ${
-                      isActive ? 'text-red-500' : 'text-neutral-300 hover:text-white'
-                    }`
-                  }
+                  className="flex items-center justify-center gap-2 rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-500"
                 >
-                  {link.label}
-                </NavLink>
+                  Pedir ahora
+                  <Bike className="h-5 w-5" aria-hidden="true" />
+                </Link>
               </li>
-            ))}
-            <li className="pt-4">
-              <Link
-                to="/delivery"
-                onClick={closeMobileMenu}
-                className="flex items-center justify-center gap-2 rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-500"
-              >
-                Pedir ahora
-                <Bike className="h-5 w-5" aria-hidden="true" />
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      )}
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   )
 }

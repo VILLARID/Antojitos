@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { CupSoda, Drumstick, LayoutGrid, Package, PlusCircle, Soup } from 'lucide-react'
 import { menuCategories } from '../../data/menuData'
 
@@ -20,11 +21,13 @@ const MenuCategories = ({ activeCategory, onSelect }) => {
             const isActive = activeCategory === category.id
             return (
               <li key={category.id} className="shrink-0">
-                <button
+                <motion.button
                   type="button"
                   onClick={() => onSelect(category.id)}
                   aria-pressed={isActive}
-                  className={`flex items-center gap-2 whitespace-nowrap rounded-lg border px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+                  whileTap={{ scale: 0.94 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                  className={`relative flex items-center gap-2 whitespace-nowrap rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors duration-200 ${
                     isActive
                       ? 'border-red-600 bg-red-600/5 text-red-500'
                       : 'border-transparent text-neutral-300 hover:bg-white/[0.04] hover:text-white'
@@ -32,7 +35,14 @@ const MenuCategories = ({ activeCategory, onSelect }) => {
                 >
                   <Icon className="h-4 w-4" aria-hidden="true" />
                   {category.label}
-                </button>
+                  {isActive && (
+                    <motion.span
+                      layoutId="active-category-dot"
+                      className="absolute -bottom-[9px] left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-red-600"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                </motion.button>
               </li>
             )
           })}
